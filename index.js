@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-const api_url = 'https://open-ai-charactergen.herokuapp.com/hello'
-
 // Middleware to parse incoming request bodies
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -16,6 +14,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the server on port 3000
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Server listening on port ' + (process.env.PORT || 3000));
 });
+

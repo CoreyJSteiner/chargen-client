@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    
+    <title>Fist of Rasputin</title>
+  </head>
+  <body>
+    <!-- <h1>Fist of Rasputin: World Info</h1> -->
+    <br>
+    <br>
+    <form method="post" action="/submit">
+      <textarea id="input_question" name="input_question" rows="4" cols="50"></textarea>
+      <button id="submit_request" type="submit">SUBMIT</button>
+      <textarea id="output_response" name="output_response" rows="20" cols="50" readonly>Offline</textarea>
+      <script>
+        const button = document.getElementById('submit_request');
+        const output = document.getElementById('output_response');
+        const loader = document.getElementById('loader');
+
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          // var baseUrl = 'http://localhost:8080'
+          var baseUrl = 'https://open-ai-charactergen.herokuapp.com'
+          const inputQuestion = document.getElementById('input_question').value;
+          
+          // Disable the button and add the elipsis
+          button.disabled = true;
+          let count = 0;
+          const interval = setInterval(() => {
+            switch (count % 3) {
+              case 0:
+                button.textContent = '.';
+                break;
+              case 1:
+                button.textContent = '..';
+                break;
+              case 2:
+                button.textContent = '...';
+                break;
+            }
+            count++;
+          }, 500);
+
+          fetch(baseUrl + '/question/russia', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"question": inputQuestion})
+          })
+          .then(response => response.text())
+          .then(data => {
+            output.value = JSON.parse(data).response;
+            clearInterval(interval);
+            button.textContent = 'SUBMIT';
+            button.disabled = false;
+          })
+          .catch(error => {
+            console.error(error);
+            clearInterval(interval);
+          })
+        });
+      </script>
+    </form>
+  </body>
+</html>

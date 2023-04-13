@@ -63,7 +63,7 @@ In recent days Rasputin has become increasingly paranoid and distressed after th
             button.disabled = false;
           })
           .catch(error => {
-            output.value = 'Error getting response from service';
+            output.value = 'GPT-4 took too long to response. Please try another prompt.';
 
             console.error(error);
             clearInterval(interval);

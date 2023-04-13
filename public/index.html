@@ -63,8 +63,12 @@ In recent days Rasputin has become increasingly paranoid and distressed after th
             button.disabled = false;
           })
           .catch(error => {
+            output.value = 'Error getting response from service';
+
             console.error(error);
             clearInterval(interval);
+            button.textContent = 'SUBMIT';
+            button.disabled = false;
           })
         });
       </script>
